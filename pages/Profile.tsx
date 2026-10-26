@@ -17,6 +17,7 @@ import { useLoadingStatus } from '../components/LoadingTimeoutProvider';
 import { useSystemLog } from '../components/SystemLogProvider';
 import { EditWorkModal } from '../components/EditWorkModal';
 import { Trash2 } from 'lucide-react';
+import { sanitizeHtml } from '../lib/sanitize';
 
 // Helper for code previews (transplanted from Karya.tsx)
 const CodeViewer = ({ content }: { content: any }) => {
@@ -325,14 +326,14 @@ export const Profile = () => {
                 return (
                     <div className="w-full h-full bg-[#f0f0f0] text-black p-8 flex flex-col justify-center items-center font-serif relative overflow-hidden group-hover:bg-white transition-colors">
                         <AlignLeft className="absolute top-4 left-4 text-gray-300" size={24} />
-                        <div className="prose prose-sm prose-invert text-black line-clamp-6 pointer-events-none" dangerouslySetInnerHTML={{ __html: art.content }} />
+                        <div className="prose prose-sm prose-invert text-black line-clamp-6 pointer-events-none" dangerouslySetInnerHTML={{ __html: sanitizeHtml(art.content) }} />
                         <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#f0f0f0] to-transparent group-hover:from-white transition-colors"></div>
                     </div>
                 );
             case 'code':
                 return (
                     <div className="w-full h-full bg-[#0d1117] relative group overflow-hidden">
-                        <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(art.content, art.code_language || 'html'))}`} sandbox="allow-scripts allow-same-origin" className="w-[200%] h-[200%] border-0 transform scale-50 origin-top-left pointer-events-none bg-white" title="Code Preview" />
+                        <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(art.content, art.code_language || 'html'))}`} sandbox="allow-scripts" className="w-[200%] h-[200%] border-0 transform scale-50 origin-top-left pointer-events-none bg-white" title="Code Preview" />
                         <div className="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] font-mono text-green-400 border border-green-500/20">CODE</div>
                     </div>
                 );
@@ -604,7 +605,7 @@ export const Profile = () => {
                                 onDelete={user && (user.id === selectedArtwork.author || user.id === selectedArtwork.author_id) ? () => handleDeleteWork(selectedArtwork.id) : undefined}
                                 renderContent={(art, showCode) => {
                                     if (art.type === 'code') {
-                                        return showCode ? <CodeViewer content={art.content} /> : <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(art.content, art.code_language || 'html'))}`} sandbox="allow-scripts allow-same-origin" className="w-full h-full border-0 bg-white" title="Interactive Preview" />;
+                                        return showCode ? <CodeViewer content={art.content} /> : <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(art.content, art.code_language || 'html'))}`} sandbox="allow-scripts" className="w-full h-full border-0 bg-white" title="Interactive Preview" />;
                                     } else if (art.type === 'video') {
                                         return <div className="w-full h-full flex items-center justify-center bg-black"><video src={art.image_url} controls autoPlay className="max-w-full max-h-full" /></div>;
                                     }
@@ -659,11 +660,11 @@ export const Profile = () => {
                                             )}
                                             {selectedArtwork.type === 'image' && <img src={selectedArtwork.image_url || selectedArtwork.slides?.[0]?.content} className="w-full h-full object-contain" />}
                                             {selectedArtwork.type === 'video' && <video src={selectedArtwork.image_url} controls autoPlay className="max-w-full max-h-full" />}
-                                            {selectedArtwork.type === 'text' && <div className="w-full h-full bg-[#f0f0f0] text-black p-12 md:p-20 overflow-y-auto"><div className="prose prose-lg font-serif" dangerouslySetInnerHTML={{ __html: selectedArtwork.content }} /></div>}
+                                            {selectedArtwork.type === 'text' && <div className="w-full h-full bg-[#f0f0f0] text-black p-12 md:p-20 overflow-y-auto"><div className="prose prose-lg font-serif" dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedArtwork.content) }} /></div>}
                                             {selectedArtwork.type === 'code' && (
                                                 <div className="w-full h-full bg-[#0d1117] relative flex flex-col">
                                                     <div className="absolute top-4 right-4 z-50"><button onClick={() => setShowSourceCode(!showSourceCode)} className="bg-black/80 text-white px-4 py-2 rounded-full text-xs font-bold border border-white/20 backdrop-blur-md hover:bg-white hover:text-black transition-colors">{showSourceCode ? '▶ HASIL' : '</> KODE'}</button></div>
-                                                    {showSourceCode ? <CodeViewer content={selectedArtwork.content} /> : <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(selectedArtwork.content, selectedArtwork.code_language || 'html'))}`} sandbox="allow-scripts allow-same-origin" className="w-full h-full border-0 bg-white" title="Code Preview" />}
+                                                    {showSourceCode ? <CodeViewer content={selectedArtwork.content} /> : <iframe src={`data:text/html;charset=utf-8,${encodeURIComponent(generateCodePreview(selectedArtwork.content, selectedArtwork.code_language || 'html'))}`} sandbox="allow-scripts" className="w-full h-full border-0 bg-white" title="Code Preview" />}
                                                 </div>
                                             )}
                                         </motion.div>

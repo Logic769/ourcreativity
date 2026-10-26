@@ -26,6 +26,13 @@ Dikerjakan host atau 1 sampai 2 orang tepercaya. Jangan dibuka sebagai bounty pu
 | S4 | Branch protection dan CI wajib | Pengaturan di `HOST_KODING.md` bagian 2.2 | PR tanpa approval atau dengan CI merah tidak bisa di-merge |
 | S5 | `npm audit fix` | Jalankan `npm audit fix` (tanpa `--force`), pastikan build dan tsc lolos | `npm audit --omit=dev` tinggal sedikit atau nol high |
 
+**Status eksekusi (branch `claude/koding-event-host-setup-ikq7nz`)**
+- S2 selesai di kode: `lib/sanitize.ts` (DOMPurify) dipakai di semua `dangerouslySetInnerHTML`.
+- S3 selesai di kode: `allow-same-origin` dihapus dari semua iframe preview.
+- S5 selesai sebagian: `npm audit fix` dijalankan. Sisa temuan berasal dari DOMPurify bawaan Monaco dan `react-router`; perlu upgrade terpisah.
+- S1: file `supabase/migrations/20261026_harden_profiles_and_works.sql` sudah ditulis tapi **belum dijalankan**. Jalankan di staging, lakukan verifikasi, baru di produksi.
+- S4: harus diatur manual di GitHub Settings (tidak bisa dilakukan lewat kode).
+
 ## 3. Daftar Issue Awal untuk Papan Event
 
 Judul dan label siap dipakai saat membuat issue. Tambahkan detail lokasi file di deskripsi.
