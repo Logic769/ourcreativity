@@ -38,3 +38,4 @@ Selamat datang di dokumentasi resmi OurCreativity. Semua dokumentasi kini tersed
 *   **[Riwayat Versi Lengkap](versions/RIWAYAT_VERSI_LENGKAP.md)**  
     Arsip sejarah perubahan versi dari awal hingga sekarang.
 - [Panduan Host Event Koding](HOST_KODING.md)
+- [Rencana Eksekusi Event Koding](EVENT_KODING_PLAN.md)
