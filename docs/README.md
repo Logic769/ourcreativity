@@ -39,3 +39,4 @@ Selamat datang di dokumentasi resmi OurCreativity. Semua dokumentasi kini tersed
     Arsip sejarah perubahan versi dari awal hingga sekarang.
 - [Panduan Host Event Koding](HOST_KODING.md)
 - [Rencana Eksekusi Event Koding](EVENT_KODING_PLAN.md)
+- [Kontrol dan Tracking Event](KONTROL_DAN_TRACKING_EVENT.md)

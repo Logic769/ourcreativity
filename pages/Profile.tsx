@@ -17,6 +17,7 @@ import { useLoadingStatus } from '../components/LoadingTimeoutProvider';
 import { useSystemLog } from '../components/SystemLogProvider';
 import { EditWorkModal } from '../components/EditWorkModal';
 import { Trash2 } from 'lucide-react';
+import { safeHttpUrl } from '../lib/safe-url';
 import { sanitizeHtml } from '../lib/sanitize';
 
 // Helper for code previews (transplanted from Karya.tsx)
@@ -83,9 +84,11 @@ const CodeViewer = ({ content }: { content: any }) => {
     );
 };
 
+const escapeScript = (str: string) => str.replace(/<\/script>/gi, '<\\/script>');
+
 const generateCodePreview = (content: string, language: string = 'html'): string => {
     const baseStyles = `* { margin:0; padding:0; box-sizing:border-box; } body { font-family:system-ui, sans-serif; background:#0a0a0a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; } canvas { display:block; margin:auto; }`;
-    const code = content || '';
+    const code = escapeScript(content || '');
     switch (language) {
         case 'p5js': case 'p5':
             return `<!DOCTYPE html><html><head><style>${baseStyles}</style><script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script></head><body><script>${code}<\/script></body></html>`;
@@ -436,7 +439,7 @@ export const Profile = () => {
 
                         <div className="flex flex-wrap justify-center md:justify-start items-center gap-6 text-sm text-gray-400">
                             {profile.website && (
-                                <a href={profile.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+                                <a href={safeHttpUrl(profile.website)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
                                     <LinkIcon size={16} /> {profile.website.replace(/^https?:\/\//, '')}
                                 </a>
                             )}
@@ -578,7 +581,7 @@ export const Profile = () => {
                                     {profile.website && (
                                         <div className="grid grid-cols-[120px_1fr] gap-4">
                                             <div className="text-gray-500 text-xs font-bold uppercase tracking-wider">Website</div>
-                                            <a href={profile.website} target="_blank" rel="noopener noreferrer" className="text-rose-500 hover:underline break-all">
+                                            <a href={safeHttpUrl(profile.website)} target="_blank" rel="noopener noreferrer" className="text-rose-500 hover:underline break-all">
                                                 {profile.website}
                                             </a>
                                         </div>
